@@ -125,6 +125,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -133,4 +137,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+    'JWT_AUTH': {
+        'JWT_VERIFY_EXPIRATION': True,  # Set to False if you don't want token expiration check
+        'JWT_EXPIRATION_DELTA': timedelta(days=7),  # Token expiration time
+        'JWT_SECRET_KEY': 'your_secret_key',  # Secret key for signing
+        'JWT_ALGORITHM': 'HS256',  # Algorithm to sign with
+    }
 }
