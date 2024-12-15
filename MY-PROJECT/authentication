@@ -1,0 +1,132 @@
+# Markdown File: Secure Your API in Glowverse Project
+# 2. Secure Your API: Basic Authentication and Token-Based Authentication
+Objective
+# Implement basic authentication using Django’s built-in authentication system or a token-based solution. This tutorial covers how to add security to your API and how to test the setup.
+
+# Setup Steps
+# 1. Setting Up Django Authentication:
+# To add basic authentication to your API, you will use Django’s built-in authentication system. Follow these steps:
+
+# Update settings.py: Add the following configuration to your settings.py file to enable Django’s built-in authentication system.
+
+# python
+# Copy code
+# settings.py
+
+# Django REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    # Session authentication will handle the session-based user authentication
+}
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+# Implement Authentication in Your API Views: Adjust your views to require authentication using BasicAuthentication.
+
+# python
+# Copy code
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .models import CustomUser
+from .serializers import UserSerializer
+
+class UserProfileView(APIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        data = {
+            "username": user.username,
+            "email": user.email,
+        }
+        return Response(data)
+# 2. Setting Up Token-Based Authentication:
+# For enhanced security, consider using a token-based solution such as JWT (JSON Web Token).
+
+# Install Django REST Framework JWT:
+
+# bash
+# Copy code
+# pip install djangorestframework-jwt
+# Update settings.py to configure JWT authentication:
+
+# settings.py
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+    'JWT_AUTH': {
+        'JWT_VERIFY_EXPIRATION': True,  # Verify token expiration
+        'JWT_EXPIRATION_DELTA': timedelta(days=7),  # Token expiration period
+        'JWT_SECRET_KEY': 'your_secret_key',  # Secret key for signing tokens
+        'JWT_ALGORITHM': 'HS256',  # Algorithm used for signing
+    }
+}
+# Use JWT in your API views: Here’s how you can modify your view to use JWT:
+
+python
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from .models import CustomUser
+from .serializers import UserSerializer
+
+class UserProfileView(APIView):
+    authentication_classes = [JSONWebTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        data = {
+            "username": user.username,
+            "email": user.email,
+        }
+        return Response(data)
+# Testing the Authentication Setup:
+# To test your authentication setup, use tools like Postman or curl. Here’s how to test:
+
+# Basic Authentication:
+
+# Open Postman or a similar tool.
+# Set the request method to GET.
+# Set the Authorization header to Basic <username:password> format.
+# Send a request to the API endpoint (e.g., /api/users/).
+# Token-Based Authentication:
+
+# Obtain a JWT token:
+# Send a POST request to /api/token/ with a JSON body containing username and password.
+# json
+
+{
+  "username": "your_username",
+  "password": "your_password"
+}
+# Receive a JWT token in the response.
+# Use the JWT token:
+# Include the token as a Bearer token in the Authorization header.
+# bash
+# Copy code
+# curl -X GET http://127.0.0.1:8000/api/users/ -H "Authorization: Bearer <your_token>"
+# Link to GitHub Repository
+# GitHub Repository: Your Glowverse Project Repository
+# Ensure the repository contains the updated code with security configurations.
+# You should have branches like feature/basic-auth, feature/jwt-auth, etc., for different features.
+# Practice pull requests for merging branches and updates to master.
+# This markdown file explains the setup and testing process for adding security to your API using Django’s built-in authentication and JWT. Adjust the placeholders as needed for your specific repository and setup.
+
+
+
+
+
+
