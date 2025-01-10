@@ -85,6 +85,18 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
             return super().get_object()
         except Product.DoesNotExist:
             raise NotFound("The requested product was not found.")
+            
+    def delete(self, request, *args, **kwargs):
+        """
+        Deletes a product and returns a success message.
+        """
+        product = self.get_object()
+        product_name = product.name  # Optional: Capture product name for response message
+        product.delete()
+        return Response(
+            {"detail": f"Product '{product_name}' has been successfully deleted."},
+            status=status.HTTP_200_OK
+        )
 
 class ProductSearchView(ListAPIView):
     queryset = Product.objects.all()
