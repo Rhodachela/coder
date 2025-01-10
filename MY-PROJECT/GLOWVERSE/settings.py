@@ -27,7 +27,11 @@ SECRET_KEY = 'django-insecure-k=f=%lb473h1^q+t8y2o5znell1eo7wqh4vio(*mze-*9n-=yy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',  # Localhost
+    'localhost',  # Localhost
+    'r-chela-7595',  # Add your system's hostname
+]
 
 
 # Application definition
@@ -43,6 +47,10 @@ INSTALLED_APPS = [
     'products',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'django_filters',
+
+
 
 ]
 
@@ -143,6 +151,17 @@ REST_FRAMEWORK = {
     ],
     
 }
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',  # Ensure responses are JSON
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',  # Use Django filters
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
+}
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -155,3 +174,10 @@ REST_FRAMEWORK = {
         'JWT_ALGORITHM': 'HS256',  # Algorithm to sign with
     }
 }
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # Example lifetime
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # Example lifetime
+}
+
+AUTH_USER_MODEL = 'users.CustomUser'
