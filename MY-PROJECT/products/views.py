@@ -21,6 +21,8 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 from .permissions import IsAdminUser
+from rest_framework.exceptions import NotFound
+
 
 
 class ProductListView(generics.ListCreateAPIView):
@@ -29,7 +31,6 @@ class ProductListView(generics.ListCreateAPIView):
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['category', 'price', 'stock_quantity']
@@ -71,6 +72,8 @@ class ProductListView(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+from rest_framework.exceptions import NotFound
+
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     Handles retrieving, updating, and deleting a single product.
@@ -81,11 +84,14 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
     def get_object(self):
+        """
+        Retrieves the product object or raises a NotFound exception.
+        """
         try:
             return super().get_object()
         except Product.DoesNotExist:
             raise NotFound("The requested product was not found.")
-            
+
     def delete(self, request, *args, **kwargs):
         """
         Deletes a product and returns a success message.
@@ -97,6 +103,7 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
             {"detail": f"Product '{product_name}' has been successfully deleted."},
             status=status.HTTP_200_OK
         )
+
 
 class ProductSearchView(ListAPIView):
     queryset = Product.objects.all()
