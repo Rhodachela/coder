@@ -1,3 +1,7 @@
 django
 djangorestframework
 djangorestframework-simplejwt
+
+/home/Chela/coder/MY-PROJECT
+GLOWVERSE 
+venv
