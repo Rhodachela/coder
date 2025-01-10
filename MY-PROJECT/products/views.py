@@ -20,8 +20,7 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
-
-
+from .permissions import IsAdminUser
 
 
 class ProductListView(generics.ListCreateAPIView):
@@ -37,7 +36,7 @@ class ProductListView(generics.ListCreateAPIView):
     search_fields = ['name', 'category']
     ordering_fields = ['price', 'created_at']
     authentication_classes = [JWTAuthentication]  # Add JWT Authentication
-    permission_classes = [IsAuthenticated]  # Only authenticated users can access
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Only authenticated users can access
 
     def get_queryset(self):
         """
@@ -78,7 +77,7 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     lookup_field = 'id'
 
     def get_object(self):
@@ -111,10 +110,10 @@ class ProductCreateView(CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
 class ProductUpdateView(UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
