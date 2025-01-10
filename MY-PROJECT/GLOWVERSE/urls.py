@@ -21,9 +21,8 @@ from products.views import ProductListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('users.urls')),
+    path('api/', include('users.urls')),
     path('api/products/', include('products.urls')),
-    path('api/products/', ProductListView.as_view(), name='product-list'),
     path('', home_view, name='home'), 
      # This line includes users/urls.py
      # Add this line for the root URL
