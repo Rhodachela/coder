@@ -51,10 +51,10 @@ python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements.txt- this is for the project deployment
 
 # Apply database migrations
 python manage.py migrate
 
 # Run the development server
-python manage.py runserver
+python manage.py runserver-- 
