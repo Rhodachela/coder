@@ -34,7 +34,7 @@ The GLOWVERSE API is a backend solution for an e-commerce platform that includes
 - Filter products by category.
 
 ## Tech Stack
-- **Backend Framework:** Django, Django REST Framework
+- **Backend Framework:** Django, Django REST Framework, Django filters
 - **Database:** SQLite (development)
 - **Authentication:** JWT (JSON Web Tokens)
 - **Hosting:** PythonAnywhere
