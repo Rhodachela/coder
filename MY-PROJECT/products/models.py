@@ -36,7 +36,7 @@ class Review(models.Model):
         return f"{self.user.username} - {self.product.name} ({self.rating}/5)"
 
     class Meta:
-        unique_together = ('product', 'user')  # Prevent users from reviewing the same product multiple times.
+        unique_together = ('product', 'user')  # Prevent users from reviewing the same product multiple times
 
     def clean(self):
         if not (1 <= self.rating <= 5):
