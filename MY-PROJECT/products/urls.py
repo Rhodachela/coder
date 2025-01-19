@@ -16,6 +16,6 @@ urlpatterns = [
     path('create/', ProductCreateView.as_view(), name='product-create'),  # Matches /api/products/create/
     path('update/<int:pk>/', ProductUpdateView.as_view(), name='product-update'),  # Matches /api/products/update/<id>/
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),  # Token authentication
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT token
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # JWT api token
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT refresh
 ]
